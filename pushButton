@@ -1,0 +1,52 @@
+/*
+ origin: http://www.arduino.cc/en/Tutorial/Button
+ */
+
+// constants won't change. They're used here to
+// set pin numbers:
+const int buttonPin = D8;     // the number of the pushbutton pin, without pulldown resistor
+const int turnOn = 0;
+const int turnOff = 1;
+const int ledIsOn = 1;
+const int ledIsOff = 0;
+const int buttonIsPushed = 1;
+
+// variables will change:
+int buttonState = 0;         // variable for reading the pushbutton status
+int ledState = 0;            // is the led on fire?
+int lastButtonState = 0;     // is the button still pressed or released?
+
+void setup() {
+  // initialize print out
+  Serial.begin(115200);
+  // initialize the LED pin as an output:
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, 1);
+  // initialize the pushbutton pin as an input:
+  pinMode(buttonPin, INPUT);
+}
+
+void loop() {
+  // read the state of the pushbutton value:
+  buttonState = digitalRead(buttonPin);
+  //Serial.print("Button state: ");
+  //Serial.println(buttonState);
+  ledState = digitalRead(LED_BUILTIN);
+  //Serial.print("LED state: ");
+  //Serial.println(ledState);
+  // check if the pushbutton is pressed.
+  // if it is, the buttonState is HIGH:
+  if (buttonState == buttonIsPushed && ledState == ledIsOff && lastButtonState != buttonState) {
+    // turn LED off:
+    digitalWrite(LED_BUILTIN, turnOff);
+    ledState = turnOff;
+    Serial.println("Turn off");
+  } else if (buttonState == buttonIsPushed && ledState == ledIsOn && lastButtonState != buttonState) {
+    // turn LED on:
+    digitalWrite(LED_BUILTIN, turnOn);
+    ledState = turnOn;
+    Serial.println("Turn on");
+  }
+  lastButtonState = buttonState;
+  delay(100);
+}
